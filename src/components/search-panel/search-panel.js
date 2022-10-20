@@ -7,7 +7,7 @@ const SearchPanel = () => {
             className="form-control search-input"
             placeholder="Найти сотрудника"
         />
-    )
+    );
 }
 
 export default SearchPanel;
