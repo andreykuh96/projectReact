@@ -13,9 +13,9 @@ class App extends Component {
         super(props);
         this.state = {
             data: [
-                {name: 'Nick', salary: 700,like: false, increase: false, id: 1},
-                {name: 'Alex', salary: 3000,like: true, increase: true, id: 2},
-                {name: 'Artur', salary: 6000,like: false, increase: false, id: 3},
+                {name: 'Nick', salary: 700, like: false, increase: false, id: 1},
+                {name: 'Alex', salary: 3000, like: false, increase: false, id: 2},
+                {name: 'Artur', salary: 6000, like: false, increase: false, id: 3},
             ]
         }
         this.maxId = 4;
@@ -34,6 +34,7 @@ class App extends Component {
             name,
             salary,
             increase: false,
+            like: false,
             id: this.maxId++
         }
         this.setState(({data}) => {
@@ -44,10 +45,38 @@ class App extends Component {
         })
     }
 
+    onToggleIncrease = (id) => {
+        this.setState(({data}) => ({
+            data: data.map(item => {
+                if (item.id === id) {
+                    return {...item, increase: !item.increase}
+                }
+                return item;
+            })
+        }))
+    }
+
+    onToggleLike = (id) => {
+        this.setState(({data}) => ({
+            data: data.map(item => {
+                if (item.id === id) {
+                    return {...item, like: !item.like}
+                }
+                return item;
+            })
+        }))
+    }
+
     render() {
+
+        const empl = this.state.data.length;
+        const incr = this.state.data.filter(item => item.increase).length;
+
         return (
             <div className="app">
-                <AppInfo/>
+                <AppInfo
+                    empl={empl}
+                    incr={incr}/>
     
                 <div className="search-panel">
                     <SearchPanel/>
@@ -56,7 +85,9 @@ class App extends Component {
     
                 <EmployeesList 
                     data={this.state.data}
-                    onDelete={this.deleteItem}/>
+                    onDelete={this.deleteItem}
+                    onToggleIncrease={this.onToggleIncrease}
+                    onToggleLike={this.onToggleLike}/>
                 <EmployeesAddForm
                     onAdd={this.addItem}/>
             </div>
